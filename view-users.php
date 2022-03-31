@@ -1,11 +1,14 @@
  
-<?php  require 'includes/session.php';
+<?php   session_start();
+        require 'includes/connection.php';
         if(!isset($_SESSION['user'])){
           header('location:login.php');
         }
 
         $pageName = "View Users";
-
+        if(isset($_GET['id'])){
+        $id = $_GET['id']
+        }
 ?>
 <?php include 'header.php' ; ?>
   <!-- Main Sidebar Container -->
@@ -59,42 +62,37 @@
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Date</th>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>User Role</th>
                     <th>Status</th>
-                    <th>Reason</th>
+                    <th>Added On</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
+                <?php 
+                    $query = "SELECT * FROM tblusers where user_role = 'user'";
+                    $result = mysqli_query($conn, $query);
+                    $i = 1;
+                    while($row = mysqli_fetch_array($result)){
+                      
+                ?>
                   <tr>
-                    <td>183</td>
-                    <td>John Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-success">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                    <td><?php echo $i; ?></td>
+                    <td><?php echo $row['first_name']. " " .$row['last_name'];?></td>
+                    <td><?php echo $row['user_name'];?></td>
+                    <td><?php echo $row['user_role'];?></td>
+                    <td> <?php if ($row['user_status'] == 1 ) {?><span class="badge badge-success">Approved</span> <?php } else {?> <span class="badge badge-danager">Not Approved</span> <?php } ?> </td>
+                    <td> <?php $addedon = $row['added_on'];
+                    $pieces = explode(" ", $addedon);
+                    echo $pieces[0]
+                    
+                    ?></td>
+                    <td> <a href="?id=<?php echo $row['user_id'];?>" class="btn btn-sm btn-primary">Edit</a> <a href="?id=<?php echo $row['user_id'];?>" class="btn btn-sm btn-danger">Delete</a></td>
                   </tr>
-                  <tr>
-                    <td>219</td>
-                    <td>Alexander Pierce</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-warning">Pending</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  </tr>
-                  <tr>
-                    <td>657</td>
-                    <td>Bob Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-primary">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  </tr>
-                  <tr>
-                    <td>175</td>
-                    <td>Mike Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="tag tag-danger">Denied</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  </tr>
+                  <?php $i++; } ?>
                 </tbody>
               </table>
             </div>

@@ -18,26 +18,42 @@ if(isset($_POST['save'])){
         $lastname      = $_POST['lastname'];
         $email         = $_POST['email'];
 
-        $userpassword = password_hash($password, PASSWORD_DEFAULT);
-        
+        $checkuser     = "SELECT * FROM tblusers WHERE user_name = '$username'";
+        $results       = mysqli_query($conn, $checkuser);
 
-        $query     = "INSERT INTO tblusers (user_name, user_password , user_email, first_name, last_name , user_role , user_status) VALUES
-        ('$username', '$userpassword' , '$email' , '$firstname' , '$lastname' , 'user' , 1 )";
+        if(mysqli_num_rows($results) != ''){
 
-       $results = mysqli_query($conn , $query);
-
-        if($results){
-            $mesage = "inserted";
-            header('location: ../view-users.php?mess='.$mesage);
-        }
-
-        else{
-
-           $error = "Not-inserted";
+           $error = "User-exist";
            header('location: ../add.php?err='.$error);
+           exit;
         }
+        else
+       {
+            
+            $userpassword = password_hash($password, PASSWORD_DEFAULT);
+            
+            $query     = "INSERT INTO tblusers (user_name, user_password , user_email, first_name, last_name , user_role , user_status) VALUES
+            ('$username', '$userpassword' , '$email' , '$firstname' , '$lastname' , 'user' , 1 )";
+
+            $results = mysqli_query($conn , $query);
+
+            if($results)
+            {
+                $mesage = "inserted";
+                header('location: ../view-users.php?mess='.$mesage);
+            }
+
+            else
+            {
+                $error = "Not-inserted";
+                header('location: ../add.php?err='.$error);
+            }
+
+        }
+
     }
-    else{
+    else
+    {
          $error = "Empty-fields";
          header('location: ../add.php?err='.$error);
     }

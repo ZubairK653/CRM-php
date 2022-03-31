@@ -21,7 +21,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="http://localhost/CRM-PHP">Home</a></li>
-              <li class="breadcrumb-item active"><?php echo pageName;?></li>
+              <li class="breadcrumb-item active"><?php echo $pageName;?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->

@@ -35,16 +35,16 @@
       <div class="container-fluid">
             <div class="row">
              <div class="col-md-12">
+             <?php if(isset($_GET['err'])){ ?>
+                        <div class="alert alert-danger">
+                             <?php echo $_GET['err'];?>
+                        </div>
+                        <?php } ?>
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Add User</h3>
                         </div>
-                        <?php if(isset($_GET['err'])){ ?>
-                        <div class="alert alert-danger">
-                             <?php echo $_GET['err'];?>
-                        </div>
-                        <?php } ?>
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form method="post" action="<?php echo htmlspecialchars('includes/save-user.php');?>" enctype="multipart/form-data" id="user-form">
